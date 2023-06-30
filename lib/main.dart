@@ -1,5 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:awesome_bottom_bar/awesome_bottom_bar.dart';
+
+const List<TabItem> items = [
+  TabItem(
+    icon: FontAwesomeIcons.barsStaggered,
+    title: 'Liste',
+  ),
+  TabItem(
+    icon: FontAwesomeIcons.message,
+    title: 'Notifiche',
+  ),
+];
 
 void main() => runApp(ComicaniApp());
 
@@ -42,26 +54,26 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
   @override
+  Color colorSelect =const Color(0XFF0686F8);
+  Color color = const Color(0XFF7AC0FF);
+  Color color2 = const Color(0XFF96B1FD);
+  Color bgColor = const  Color(0XFF1752FE);
   Widget build(BuildContext context) {
     return Scaffold(
       body: Center(
         child: _widgetOptions.elementAt(_selectedIndex),
       ),
-      bottomNavigationBar: BottomNavigationBar(
-        elevation: 0.0,
-        showSelectedLabels: false,
-        showUnselectedLabels: false,
-        fixedColor: Colors.amber,
-        items: <BottomNavigationBarItem>[
-          BottomNavigationBarItem(
-              icon: new Icon(FontAwesomeIcons.rectangleList), label: 'Liste'),
-          BottomNavigationBarItem(
-            icon: new Icon(FontAwesomeIcons.message),
-            label: 'Liste',
-          ),
-        ],
-        currentIndex: _selectedIndex,
-        onTap: _onItemTapped,
+      bottomNavigationBar: BottomBarSalomon(
+        items: items,
+        color: Colors.blue,
+        backgroundColor: Colors.white,
+        colorSelected: Colors.white,
+        backgroundSelected: Colors.blue,
+        borderRadius: BorderRadius.circular(0),
+        indexSelected: _selectedIndex,
+        onTap: (index) => setState(() {
+          _selectedIndex = index;
+        }),
       ),
     );
   }
