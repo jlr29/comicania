@@ -1,6 +1,6 @@
 import 'package:awesome_bottom_bar/awesome_bottom_bar.dart';
 import 'package:awesome_bottom_bar/extension/shadow.dart';
-import 'package:awesome_bottom_bar/src/bottom_bar.dart';
+import '../src/bottom_bar.dart';
 import 'package:awesome_bottom_bar/widgets/build_icon.dart';
 import 'package:flutter/material.dart';
 
@@ -44,7 +44,7 @@ class BottomBarJolomon extends StatefulWidget {
     this.boxShadow,
     this.onTap,
     this.curve = Curves.linear,
-    this.duration = const Duration(milliseconds: 300),
+    this.duration = const Duration(milliseconds: 200),
     this.radiusSalomon,
     this.iconSize = 22,
     this.titleStyle,
@@ -57,10 +57,11 @@ class BottomBarJolomon extends StatefulWidget {
           key: key,
         );
   @override
-  _BottomBarSalomonState createState() => _BottomBarSalomonState();
+  State<BottomBarJolomon> createState() => _BottomBarJolomonState();
 }
 
-class _BottomBarSalomonState extends State<BottomBarSalomon> with TickerProviderStateMixin {
+class _BottomBarJolomonState extends State<BottomBarJolomon>
+    with TickerProviderStateMixin {
   @override
   Widget build(BuildContext context) {
     return BuildLayout(
@@ -77,10 +78,10 @@ class _BottomBarSalomonState extends State<BottomBarSalomon> with TickerProvider
                 children: List.generate(
                   widget.items.length,
                   (index) {
-                    String value = widget.items[index].key ?? '';
                     return GestureDetector(
-                      key: Key(value),
-                      onTap: index != widget.indexSelected ? () => widget.onTap?.call(index) : null,
+                      onTap: index != widget.indexSelected
+                          ? () => widget.onTap?.call(index)
+                          : null,
                       child: widget.items.length > index
                           ? buildItem(
                               context,
@@ -190,8 +191,11 @@ class _BottomBarSalomonState extends State<BottomBarSalomon> with TickerProvider
                     padding: const EdgeInsetsDirectional.only(start: 8),
                     child: Text(
                       item.title!,
-                      style:
-                          Theme.of(context).textTheme.labelSmall?.merge(widget.titleStyle).copyWith(color: itemColor),
+                      style: Theme.of(context)
+                          .textTheme
+                          .labelSmall
+                          ?.merge(widget.titleStyle)
+                          .copyWith(color: itemColor),
                       textAlign: TextAlign.center,
                     ),
                   ),

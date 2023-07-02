@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:awesome_bottom_bar/awesome_bottom_bar.dart';
-import 'package:comicania/service/bottom_bar_jolomon.dart';
+import 'common/bottom_bar_jolomon.dart';
+import 'common/bottom_tabbar_jolomon.dart';
 
 const List<TabItem> items = [
   TabItem(
@@ -37,13 +38,13 @@ class MyHomePage extends StatefulWidget {
   const MyHomePage({Key? key}) : super(key: key);
 
   @override
-  _MyHomePageState createState() => _MyHomePageState();
+  State<MyHomePage> createState() => _MyHomePageState();
 }
 
 class _MyHomePageState extends State<MyHomePage> {
   int _selectedIndex = 0;
 
-  static List<Widget> _widgetOptions = <Widget>[
+  static final List<Widget> _widgetOptions = <Widget>[
     const Text('Liste'),
     const Text('Notifiche'),
   ];
@@ -65,7 +66,7 @@ class _MyHomePageState extends State<MyHomePage> {
       body: Center(
         child: _widgetOptions.elementAt(_selectedIndex),
       ),
-      bottomNavigationBar: BottomBarJolomon(
+      bottomNavigationBar: BottomTabbarJolomon(
         //for sliding pages, substitute bottomnavbar with tabbar: do as in https://x-wei.github.io/flutter_catalog/#/minified:L_
         items: items,
         color: Colors.blue,
