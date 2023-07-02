@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:awesome_bottom_bar/awesome_bottom_bar.dart';
+import 'package:comicania/service/bottom_bar_jolomon.dart';
 
 const List<TabItem> items = [
   TabItem(
@@ -54,16 +55,18 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
   @override
-  Color colorSelect =const Color(0XFF0686F8);
+  Color colorSelect = const Color(0XFF0686F8);
   Color color = const Color(0XFF7AC0FF);
   Color color2 = const Color(0XFF96B1FD);
-  Color bgColor = const  Color(0XFF1752FE);
+  Color bgColor = const Color(0XFF1752FE);
+
   Widget build(BuildContext context) {
     return Scaffold(
       body: Center(
         child: _widgetOptions.elementAt(_selectedIndex),
       ),
-      bottomNavigationBar: BottomBarSalomon(
+      bottomNavigationBar: BottomBarJolomon(
+        //for sliding pages, substitute bottomnavbar with tabbar: do as in https://x-wei.github.io/flutter_catalog/#/minified:L_
         items: items,
         color: Colors.blue,
         backgroundColor: Colors.white,
