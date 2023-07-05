@@ -1,3 +1,5 @@
+// ignore_for_file: unnecessary_const
+
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:animated_notch_bottom_bar/animated_notch_bottom_bar/animated_notch_bottom_bar.dart';
@@ -13,7 +15,7 @@ class ComicaniApp extends StatelessWidget {
     return MaterialApp(
       title: 'ComicaniApp',
       theme: ThemeData(
-        primaryColor: Colors.blueAccent[400],
+        primaryColor: const Color.fromARGB(255, 74, 223, 37),
         canvasColor: const Color(0xFFF8F8F8),
       ),
       home: const MyHomePage(),
@@ -33,79 +35,89 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
   //MAIN ATTRACTION: here we define the widgets; ends at the end of main.dart
   int _selectedIndex = 0;
-
-  static const _kTabPages = <Widget>[
-    Center(child: Icon(Icons.cloud, size: 64.0, color: Colors.teal)),
-    Center(child: Icon(Icons.alarm, size: 64.0, color: Colors.cyan)),
-  ];
-
-  static const _kTabs = <Tab>[
-    Tab(icon: Icon(Icons.cloud), text: 'Tab1'),
-    Tab(icon: Icon(Icons.alarm), text: 'Tab2'),
+  int _currIndex = 0;
+  late NotchBottomBarController _controller;
+  late TabController _tabController;
+  final _kTabPages = <Widget>[
+    const Center(child: Icon(Icons.cloud, size: 64.0, color: Colors.teal)),
+    const Center(child: Icon(Icons.alarm, size: 64.0, color: Colors.cyan)),
+    const Center(child: Icon(Icons.forum, size: 64.0, color: Colors.blue)),
   ];
 
   @override
   void initState() {
     super.initState();
-    _tabController = PageController();
+    _controller = NotchBottomBarController(index: _selectedIndex);
+    _tabController = TabController(length: 3, vsync: this);
   }
 
   @override
   void dispose() {
+    _controller.dispose();
     _tabController.dispose();
     super.dispose();
   }
 
-  late PageController _tabController;
-
-  @override
-  Color colorSelect = const Color(0XFF0686F8);
-  Color color = const Color(0XFF7AC0FF);
-  Color color2 = const Color(0XFF96B1FD);
-  Color bgColor = const Color(0XFF1752FE);
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        body: PageView(
-          controller: _tabController,
-          children: _kTabPages,
-          onPageChanged: (index) {
+      body: Center(child: _kTabPages[_selectedIndex]),
+      bottomNavigationBar: AnimatedNotchBottomBar(
+          durationInMilliSeconds: 200,
+          showLabel: true,
+          notchBottomBarController: _controller,
+          onTap: (int index) {
             setState(() {
               _selectedIndex = index;
+              _currIndex = _currIndex == 0 ? 1 : 0; //TODO: animazione icone corretta https://medium.com/flutter-community/animated-icons-the-missing-piece-to-your-bottom-nav-in-flutter-rive-1f34dd4d7bf8
             });
           },
-        ),
-        bottomNavigationBar: AnimatedNotchBottomBar(
-            pageController: _tabController,
-            onTap: (index) {
-              _tabController.animateToPage(index,
-                  duration: const Duration(milliseconds: 300),
-                  curve: Curves.ease);
-            },
-            bottomBarItems: const [
-              BottomBarItem(
-                inActiveItem: Icon(
-                  Icons.home_filled,
+          bottomBarItems: [
+            BottomBarItem(
+                inActiveItem: const Icon(
+                  FontAwesomeIcons.bars,
                   color: Colors.blueGrey,
                 ),
-                activeItem: Icon(
-                  Icons.home_filled,
-                  color: Colors.blueAccent,
+                activeItem: AnimatedSwitcher(
+                  duration: const Duration(milliseconds: 350),
+                  transitionBuilder: (child, anim) => RotationTransition(
+                    turns: child.key == ValueKey('icon1')
+                        ? Tween<double>(begin: 1, end: 0.5).animate(anim)
+                        : Tween<double>(begin: 0.5, end: 1).animate(anim),
+                    child: ScaleTransition(scale: anim, child: child),
+                  ),
+                  child: _currIndex == 0
+                      ? const Icon(FontAwesomeIcons.bars,
+                          key: ValueKey('icon1'))
+                      : const Icon(
+                          FontAwesomeIcons.barsStaggered,
+                          key: ValueKey('icon2'),
+                        ),
                 ),
-                itemLabel: 'Page 1',
+                itemLabel: 'Liste'),
+            const BottomBarItem(
+              inActiveItem: Icon(
+                FontAwesomeIcons.plus,
+                color: Colors.blueGrey,
               ),
-              BottomBarItem(
-                inActiveItem: Icon(
-                  Icons.star,
-                  color: Colors.blueGrey,
-                ),
-                activeItem: Icon(
-                  Icons.star,
-                  color: Colors.blueAccent,
-                ),
-                itemLabel: 'Page 2',
+              activeItem: const Icon(
+                FontAwesomeIcons.squarePlus,
+                color: const Color.fromARGB(255, 250, 190, 49),
               ),
-            ]));
+              itemLabel: 'New',
+            ),
+            const BottomBarItem(
+              inActiveItem: Icon(
+                FontAwesomeIcons.message,
+                color: Colors.blueGrey,
+              ),
+              activeItem: Icon(
+                FontAwesomeIcons.solidMessage,
+                color: Color.fromARGB(255, 150, 10, 250),
+              ),
+              itemLabel: 'Notifiche',
+            ),
+          ]),
+    );
   }
 }
