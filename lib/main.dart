@@ -1,9 +1,6 @@
-// ignore_for_file: unnecessary_const
-
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:animated_notch_bottom_bar/animated_notch_bottom_bar/animated_notch_bottom_bar.dart';
-//import 'common/new_beauty_icons.dart';
 
 void main() => runApp(const ComicaniApp()); //run the app
 
@@ -36,15 +33,14 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
   //MAIN ATTRACTION: here we define the widgets; ends at the end of main.dart
   int _selectedIndex = 0;
-  int _currIndex = 0;
   late NotchBottomBarController _controller;
   late TabController _tabController;
+
   final _kTabPages = <Widget>[
     const Center(child: Icon(Icons.cloud, size: 64.0, color: Colors.teal)),
     const Center(child: Icon(Icons.alarm, size: 64.0, color: Colors.cyan)),
     const Center(child: Icon(Icons.forum, size: 64.0, color: Colors.blue)),
   ];
-
 
   @override
   void initState() {
@@ -71,44 +67,31 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
           onTap: (int index) {
             setState(() {
               _selectedIndex = index;
-              _currIndex = _currIndex == 0 ? 1 : 0;
             });
           },
-          bottomBarItems: [
+          bottomBarItems: const [
             BottomBarItem(
-                inActiveItem: const Icon(
+                inActiveItem: Icon(
                   FontAwesomeIcons.bars,
                   color: Colors.blueGrey,
                 ),
-                activeItem: AnimatedSwitcher(
-                  duration: const Duration(milliseconds: 350),
-                  transitionBuilder: (child, anim) => RotationTransition(
-                    turns: child.key == ValueKey('icon1')
-                        ? Tween<double>(begin: 1, end: 0.5).animate(anim)
-                        : Tween<double>(begin: 0.5, end: 1).animate(anim),
-                    child: ScaleTransition(scale: anim, child: child),
-                  ),
-                  child: _currIndex == 0
-                      ? const Icon(FontAwesomeIcons.bars,
-                          key: ValueKey('icon1'))
-                      : const Icon(
-                          FontAwesomeIcons.barsStaggered,
-                          key: ValueKey('icon2'),
-                        ),
+                activeItem: Icon(
+                  FontAwesomeIcons.barsStaggered,
+                  color: Color.fromARGB(255, 47, 246, 3),
                 ),
                 itemLabel: 'Liste'),
-            const BottomBarItem(
+            BottomBarItem(
               inActiveItem: Icon(
                 FontAwesomeIcons.plus,
                 color: Colors.blueGrey,
               ),
-              activeItem: const Icon(
+              activeItem: Icon(
                 FontAwesomeIcons.squarePlus,
-                color: const Color.fromARGB(255, 250, 190, 49),
+                color: Color.fromARGB(255, 250, 190, 49),
               ),
               itemLabel: 'New',
             ),
-            const BottomBarItem(
+            BottomBarItem(
               inActiveItem: Icon(
                 FontAwesomeIcons.message,
                 color: Colors.blueGrey,

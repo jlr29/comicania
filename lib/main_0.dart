@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:animated_notch_bottom_bar/animated_notch_bottom_bar/animated_notch_bottom_bar.dart';
 
 void main() => runApp(const ComicaniApp()); //run the app
 
@@ -12,7 +13,7 @@ class ComicaniApp extends StatelessWidget {
     return MaterialApp(
       title: 'ComicaniApp',
       theme: ThemeData(
-        primaryColor: Colors.blueAccent[400],
+        primaryColor: const Color.fromARGB(255, 74, 223, 37),
         canvasColor: const Color(0xFFF8F8F8),
       ),
       home: const MyHomePage(),
@@ -32,64 +33,76 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
   //MAIN ATTRACTION: here we define the widgets; ends at the end of main.dart
   int _selectedIndex = 0;
+  late NotchBottomBarController _controller;
+  late TabController _tabController;
 
-  static const _kTabPages = <Widget>[
-    Center(child: Icon(Icons.cloud, size: 64.0, color: Colors.teal)),
-    Center(child: Icon(Icons.alarm, size: 64.0, color: Colors.cyan)),
-  ];
-
-  static const _kTabs = <Tab>[
-    Tab(icon: Icon(Icons.cloud), text: 'Tab1'),
-    Tab(icon: Icon(Icons.alarm), text: 'Tab2'),
+  final _kTabPages = <Widget>[
+    const Center(child: Icon(Icons.cloud, size: 64.0, color: Colors.teal)),
+    const Center(child: Icon(Icons.alarm, size: 64.0, color: Colors.cyan)),
+    const Center(child: Icon(Icons.forum, size: 64.0, color: Colors.blue)),
   ];
 
   @override
   void initState() {
     super.initState();
-    _tabController = PageController();
+    _controller = NotchBottomBarController(index: _selectedIndex);
+    _tabController = TabController(length: 3, vsync: this);
   }
 
   @override
   void dispose() {
+    _controller.dispose();
     _tabController.dispose();
     super.dispose();
   }
 
-  late PageController _tabController;
-
-  @override
-  Color colorSelect = const Color(0XFF0686F8);
-  Color color = const Color(0XFF7AC0FF);
-  Color color2 = const Color(0XFF96B1FD);
-  Color bgColor = const Color(0XFF1752FE);
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: PageView(
-        controller: _tabController,
-        children: _kTabPages,
-        onPageChanged: (index) {
-          setState(() {
-            _selectedIndex = index;
-          });
-        },
-      ),
-      bottomNavigationBar: BottomNavigationBar(
-        currentIndex: _selectedIndex,
-        onTap: (index) {
-          _tabController.animateToPage(
-            index,
-            duration: const Duration(milliseconds: 300),
-            curve: Curves.ease);
-        },
-        items: const [
-          BottomNavigationBarItem(
-              icon: Text("R"), activeIcon: Text("Active"), label: "Active"),
-          BottomNavigationBarItem(
-              icon: Text("G"), activeIcon: Text("Active"), label: "Red"),
-        ],
-      ),
+      body: Center(child: _kTabPages[_selectedIndex]),
+      bottomNavigationBar: AnimatedNotchBottomBar(
+          durationInMilliSeconds: 200,
+          showLabel: true,
+          notchBottomBarController: _controller,
+          onTap: (int index) {
+            setState(() {
+              _selectedIndex = index;
+            });
+          },
+          bottomBarItems: const [
+            BottomBarItem(
+                inActiveItem: Icon(
+                  FontAwesomeIcons.bars,
+                  color: Colors.blueGrey,
+                ),
+                activeItem: Icon(
+                  FontAwesomeIcons.barsStaggered,
+                  color: Color.fromARGB(255, 47, 246, 3),
+                ),
+                itemLabel: 'Liste'),
+            BottomBarItem(
+              inActiveItem: Icon(
+                FontAwesomeIcons.plus,
+                color: Colors.blueGrey,
+              ),
+              activeItem: Icon(
+                FontAwesomeIcons.squarePlus,
+                color: Color.fromARGB(255, 250, 190, 49),
+              ),
+              itemLabel: 'New',
+            ),
+            BottomBarItem(
+              inActiveItem: Icon(
+                FontAwesomeIcons.message,
+                color: Colors.blueGrey,
+              ),
+              activeItem: Icon(
+                FontAwesomeIcons.solidMessage,
+                color: Color.fromARGB(255, 150, 10, 250),
+              ),
+              itemLabel: 'Notifiche',
+            ),
+          ]),
     );
   }
 }
