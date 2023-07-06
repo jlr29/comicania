@@ -3,6 +3,7 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:animated_notch_bottom_bar/animated_notch_bottom_bar/animated_notch_bottom_bar.dart';
+//import 'common/new_beauty_icons.dart';
 
 void main() => runApp(const ComicaniApp()); //run the app
 
@@ -44,6 +45,7 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
     const Center(child: Icon(Icons.forum, size: 64.0, color: Colors.blue)),
   ];
 
+
   @override
   void initState() {
     super.initState();
@@ -69,7 +71,7 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
           onTap: (int index) {
             setState(() {
               _selectedIndex = index;
-              _currIndex = _currIndex == 0 ? 1 : 0; //TODO: animazione icone corretta https://medium.com/flutter-community/animated-icons-the-missing-piece-to-your-bottom-nav-in-flutter-rive-1f34dd4d7bf8
+              _currIndex = _currIndex == 0 ? 1 : 0;
             });
           },
           bottomBarItems: [
