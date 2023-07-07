@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'dart:math';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 //import 'package:animated_notch_bottom_bar/animated_notch_bottom_bar/animated_notch_bottom_bar.dart';
 import 'package:bubble_bottom_bar/bubble_bottom_bar.dart';
+import 'package:circular_menu/circular_menu.dart';
 import 'pages/lists_page.dart';
 import 'pages/notifications_page.dart';
 
@@ -44,16 +46,16 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
   ];*/
 
   final List<Widget> _pagine = [
-    ListPage(),
-    /*NotiPage(
-      user: _currentUser,
-    ),*/
+    const ListPage(),
+    const NotiPage(),
   ];
 
   final _coloris = <Color>[
     const Color.fromARGB(255, 16, 236, 0),
     const Color.fromARGB(255, 253, 190, 89),
   ];
+
+  final Color viola = const Color.fromARGB(255, 136, 0, 255);
 
   int? get index => null;
 
@@ -72,11 +74,68 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Center(child: _pagine[_selectedIndex]),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {},
-        backgroundColor: const Color.fromARGB(255, 136, 0, 255),
-        child: const Icon(FontAwesomeIcons.squarePlus),
+      body: CircularMenu(
+        alignment: Alignment.bottomRight,
+        radius: 100,
+        backgroundWidget: _pagine[_selectedIndex],
+        animationDuration: const Duration(milliseconds: 500),
+        curve: Curves.decelerate,
+        reverseCurve: Curves.ease,
+        toggleButtonColor: viola,
+        toggleButtonBoxShadow: const [
+          BoxShadow(
+            blurRadius: 0,
+          ),
+        ],
+        toggleButtonIconColor: Colors.white,
+        toggleButtonSize: 40.0,
+        items: [
+          CircularMenuItem(
+              boxShadow: const [
+                BoxShadow(
+                  blurRadius: 0,
+                ),
+              ],
+              icon: FontAwesomeIcons.fileMedical,
+              color: viola,
+              iconColor: Colors.white,
+              iconSize: 25.0,
+              margin: 10.0,
+              padding: 10.0,
+              onTap: () {
+                //TODO: callback
+              }),
+          CircularMenuItem(
+              boxShadow: const [
+                BoxShadow(
+                  blurRadius: 0,
+                ),
+              ],
+              icon: FontAwesomeIcons.commentMedical,
+              color: viola,
+              iconColor: Colors.white,
+              iconSize: 25.0,
+              margin: 10.0,
+              padding: 10.0,
+              onTap: () {
+                //TODO: callback
+              }),
+          CircularMenuItem(
+              boxShadow: const [
+                BoxShadow(
+                  blurRadius: 0,
+                ),
+              ],
+              icon: Icons.settings,
+              color: viola,
+              iconColor: Colors.white,
+              iconSize: 25.0,
+              margin: 10.0,
+              padding: 10.0,
+              onTap: () {
+                //TODO: callback
+              }),
+        ],
       ),
       bottomNavigationBar: BubbleBottomBar(
         opacity: .2,
@@ -93,16 +152,17 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
         inkColor: Colors.black12,
         items: <BubbleBottomBarItem>[
           BubbleBottomBarItem(
-              backgroundColor: _coloris[_selectedIndex],
-              icon: const Icon(
-                FontAwesomeIcons.bars,
-                color: Colors.black,
-              ),
-              activeIcon: const Icon(
-                FontAwesomeIcons.barsStaggered,
-                color: Color.fromARGB(255, 12, 180, 0),
-              ),
-              title: const Text("Liste"),),
+            backgroundColor: _coloris[_selectedIndex],
+            icon: const Icon(
+              FontAwesomeIcons.bars,
+              color: Colors.black,
+            ),
+            activeIcon: const Icon(
+              FontAwesomeIcons.barsStaggered,
+              color: Color.fromARGB(255, 12, 180, 0),
+            ),
+            title: const Text("Liste"),
+          ),
           BubbleBottomBarItem(
             backgroundColor: _coloris[_selectedIndex],
             icon: const Icon(
