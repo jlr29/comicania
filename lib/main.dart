@@ -38,9 +38,16 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
   int _selectedIndex = 0;
   late TabController _tabController;
 
-  final _kTabPages = <Widget>[
+  /*final _kTabPages = <Widget>[
     const Center(child: Icon(Icons.cloud, size: 64.0, color: Colors.teal)),
     const Center(child: Icon(Icons.alarm, size: 64.0, color: Colors.cyan)),
+  ];*/
+
+  final List<Widget> _pagine = [
+    ListPage(),
+    /*NotiPage(
+      user: _currentUser,
+    ),*/
   ];
 
   final _coloris = <Color>[
@@ -65,7 +72,7 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Center(child: _kTabPages[_selectedIndex]),
+      body: Center(child: _pagine[_selectedIndex]),
       floatingActionButton: FloatingActionButton(
         onPressed: () {},
         backgroundColor: const Color.fromARGB(255, 136, 0, 255),
