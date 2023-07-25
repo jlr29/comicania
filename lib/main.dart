@@ -14,6 +14,9 @@ class ComicaniApp extends StatelessWidget {
     return MaterialApp(
       title: 'ComicaniApp',
       theme: ThemeData(
+        bottomNavigationBarTheme:
+            const BottomNavigationBarThemeData(backgroundColor: Colors.black),
+        colorScheme: const ColorScheme.dark(secondary: Colors.pink),
         brightness: Brightness.dark,
         useMaterial3: true,
       ),
@@ -66,7 +69,9 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
           onTap: (index) {
             setState(() {
               _selectedIndex = index;
-              _tabController.animateToPage(_selectedIndex, duration: const Duration(milliseconds: 500), curve: Curves.ease);
+              _tabController.animateToPage(_selectedIndex,
+                  duration: const Duration(milliseconds: 500),
+                  curve: Curves.ease);
             });
           },
           items: const [
