@@ -1,6 +1,11 @@
 /*import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:animated_notch_bottom_bar/animated_notch_bottom_bar/animated_notch_bottom_bar.dart';
+import 'package:bubble_bottom_bar/bubble_bottom_bar.dart';
+import 'package:circular_menu/circular_menu.dart'; //there are also more features than the one used below
+import 'pages/music_page.dart';
+import 'pages/comics_page.dart';
+import 'package:stylish_bottom_bar/stylish_bottom_bar.dart';
+import 'common/bottom_bar_items.dart';
 
 void main() => runApp(const ComicaniApp()); //run the app
 
@@ -13,8 +18,8 @@ class ComicaniApp extends StatelessWidget {
     return MaterialApp(
       title: 'ComicaniApp',
       theme: ThemeData(
-        primaryColor: const Color.fromARGB(255, 74, 223, 37),
-        canvasColor: const Color(0xFFF8F8F8),
+        brightness: Brightness.dark,
+        useMaterial3: true,
       ),
       home: const MyHomePage(),
       debugShowCheckedModeBanner: false,
@@ -33,25 +38,30 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
   //MAIN ATTRACTION: here we define the widgets; ends at the end of main.dart
   int _selectedIndex = 0;
-  late NotchBottomBarController _controller;
-  late TabController _tabController;
+  late PageController _tabController;
 
-  final _kTabPages = <Widget>[
+  /*final _kTabPages = <Widget>[
     const Center(child: Icon(Icons.cloud, size: 64.0, color: Colors.teal)),
     const Center(child: Icon(Icons.alarm, size: 64.0, color: Colors.cyan)),
-    const Center(child: Icon(Icons.forum, size: 64.0, color: Colors.blue)),
+  ];*/
+
+  final List<Widget> _pagine = [
+    const ComicPage(),
+    const MusicPage(),
   ];
+
+  final Color buttonColor = Color.fromARGB(163, 143, 143, 143);
+
+  int? get index => null;
 
   @override
   void initState() {
     super.initState();
-    _controller = NotchBottomBarController(index: _selectedIndex);
-    _tabController = TabController(length: 3, vsync: this);
+    _tabController = PageController();
   }
 
   @override
   void dispose() {
-    _controller.dispose();
     _tabController.dispose();
     super.dispose();
   }
@@ -59,50 +69,84 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Center(child: _kTabPages[_selectedIndex]),
-      bottomNavigationBar: AnimatedNotchBottomBar(
-          durationInMilliSeconds: 200,
-          showLabel: true,
-          notchBottomBarController: _controller,
-          onTap: (int index) {
-            setState(() {
-              _selectedIndex = index;
-            });
-          },
-          bottomBarItems: const [
-            BottomBarItem(
-                inActiveItem: Icon(
-                  FontAwesomeIcons.bars,
-                  color: Colors.blueGrey,
+      floatingActionButton: CircularMenu(
+        alignment: Alignment.bottomRight,
+        radius: 100,
+        animationDuration: const Duration(milliseconds: 200),
+        curve: Curves.decelerate,
+        reverseCurve: Curves.ease,
+        toggleButtonColor: buttonColor,
+        toggleButtonBoxShadow: const [
+          BoxShadow(
+            blurRadius: 0,
+          ),
+        ],
+        toggleButtonIconColor: Color.fromARGB(255, 0, 0, 0),
+        toggleButtonSize: 40.0,
+        items: [
+          CircularMenuItem(
+              boxShadow: const [
+                BoxShadow(
+                  blurRadius: 0,
                 ),
-                activeItem: Icon(
-                  FontAwesomeIcons.barsStaggered,
-                  color: Color.fromARGB(255, 47, 246, 3),
+              ],
+              icon: FontAwesomeIcons.fileMedical,
+              color: buttonColor,
+              iconColor: Colors.white,
+              iconSize: 25.0,
+              margin: 10.0,
+              padding: 10.0,
+              onTap: () {
+                //TODO: callback
+              }),
+          CircularMenuItem(
+              boxShadow: const [
+                BoxShadow(
+                  blurRadius: 0,
                 ),
-                itemLabel: 'Liste'),
-            BottomBarItem(
-              inActiveItem: Icon(
-                FontAwesomeIcons.plus,
-                color: Colors.blueGrey,
-              ),
-              activeItem: Icon(
-                FontAwesomeIcons.squarePlus,
-                color: Color.fromARGB(255, 250, 190, 49),
-              ),
-              itemLabel: 'New',
-            ),
-            BottomBarItem(
-              inActiveItem: Icon(
-                FontAwesomeIcons.message,
-                color: Colors.blueGrey,
-              ),
-              activeItem: Icon(
-                FontAwesomeIcons.solidMessage,
-                color: Color.fromARGB(255, 150, 10, 250),
-              ),
-              itemLabel: 'Notifiche',
-            ),
-          ]),
+              ],
+              icon: FontAwesomeIcons.commentMedical,
+              color: buttonColor,
+              iconColor: Colors.white,
+              iconSize: 25.0,
+              margin: 10.0,
+              padding: 10.0,
+              onTap: () {
+                //TODO: callback
+              }),
+        ],
+      ),
+      body: PageView(
+        controller: _tabController,
+        children: _pagine,
+      ),
+      bottomNavigationBar: StylishBottomBar(
+        currentIndex: _selectedIndex,
+        backgroundColor: Color.fromARGB(202, 63, 63, 63),
+        bubbleFillStyle: BubbleFillStyle.outlined,
+        barStyle: BubbleBarStyle.horizotnal,
+        barAnimation: BarAnimation.blink,
+        onTap: (index) {
+          setState(() {
+            _selectedIndex = index!;
+            _tabController.jumpToPage(index);
+          });
+        },
+        items: [
+          BubbleBarItem(
+            activeIcon: const Icon(FontAwesomeIcons.bookSkull),
+            icon: const Icon(FontAwesomeIcons.book),
+            title: const Text('Comics'),
+            backgroundColor: Color.fromARGB(178, 13, 201, 0),
+          ),
+          BubbleBarItem(
+            activeIcon: const Icon(FontAwesomeIcons.napster),
+            icon: const Icon(FontAwesomeIcons.headphones),
+            title: const Text('Safety'),
+            backgroundColor: Color.fromARGB(165, 255, 181, 61),
+          ),
+        ],
+      ),
     );
   }
 }*/

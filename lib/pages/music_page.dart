@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 
-class ListPage extends StatefulWidget {
-  const ListPage({Key? key}) : super(key: key);
+class MusicPage extends StatefulWidget {
+  const MusicPage({Key? key}) : super(key: key);
 
   @override
-  State<StatefulWidget> createState() => _ListPageState();
+  State<StatefulWidget> createState() => _MusicPageState();
 }
 
-class _ListPageState extends State<ListPage>
+class _MusicPageState extends State<MusicPage>
     with SingleTickerProviderStateMixin {
   int index = 1;
 
